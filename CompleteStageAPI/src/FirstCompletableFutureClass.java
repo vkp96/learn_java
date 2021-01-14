@@ -13,6 +13,7 @@ class FirstCompletableFutureClass {
 
         CompletableFuture.runAsync(task, executorService); // running the task on a different thread
 
-        //since the executor is never shutdown jvm never exits
+        executorService.shutdown();
+
     }
 }
