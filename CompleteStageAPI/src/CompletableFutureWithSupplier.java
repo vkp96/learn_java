@@ -8,7 +8,13 @@ class CompletableFutureWithSupplier {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        Supplier<String> supplier = () -> Thread.currentThread().getName();
+        Supplier<String> supplier = () ->  {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            return Thread.currentThread().getName();
+        };
 
         CompletableFuture<String> completableFutureForkJoin =
                 CompletableFuture.supplyAsync(supplier); //uses fork-join pool thread
@@ -21,6 +27,8 @@ class CompletableFutureWithSupplier {
 
         System.out.println("Result = " + string1);
         System.out.println("Result = " + string2);
+
+        executorService.shutdown();
 
     }
 }
