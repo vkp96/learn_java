@@ -7,11 +7,13 @@ class FirstCompletableFutureClass {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        Runnable task = () -> {
-            System.out.println("I am running asynchronously!");
+        Runnable task1 = () -> {
+            System.out.println("I am running asynchronously! " + Thread.currentThread().getName());
         };
 
-        CompletableFuture.runAsync(task, executorService); // running the task on a different thread
+        CompletableFuture.runAsync(task1); //uses fork-join pool thread
+
+        CompletableFuture.runAsync(task1, executorService); // running the task on a different thread
 
         executorService.shutdown();
 
