@@ -16,16 +16,13 @@ class CompletableFutureWithSupplier {
             return Thread.currentThread().getName();
         };
 
-        CompletableFuture<String> completableFutureForkJoin =
-                CompletableFuture.supplyAsync(supplier); //uses fork-join pool thread
-
         CompletableFuture<String> completableFutureExec =
                 CompletableFuture.supplyAsync(supplier, executorService);
 
-        String string1 = completableFutureForkJoin.join();
+        completableFutureExec.complete("taking too long!"); //it will force completion if the task was not completed
+
         String string2 = completableFutureExec.join();
 
-        System.out.println("Result = " + string1);
         System.out.println("Result = " + string2);
 
         executorService.shutdown();
