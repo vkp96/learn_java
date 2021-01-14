@@ -1,13 +1,18 @@
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class FirstCompletableFutureClass {
-    //The following code does not print anything since the main thread dies before the completable future
-    //gets a chance to execute
     public static void main(String[] args) throws InterruptedException {
-        CompletableFuture.runAsync(() -> {
-           System.out.println("I am running asynchronously!");
-        });
-        //the below statement allows some time for the runnable task to execute
-        Thread.sleep(100);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Runnable task = () -> {
+            System.out.println("I am running asynchronously!");
+        };
+
+        CompletableFuture.runAsync(task, executorService); // running the task on a different thread
+
+        //since the executor is never shutdown jvm never exits
     }
 }
