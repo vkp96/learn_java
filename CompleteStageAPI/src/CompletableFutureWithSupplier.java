@@ -19,9 +19,19 @@ class CompletableFutureWithSupplier {
         CompletableFuture<String> completableFutureExec =
                 CompletableFuture.supplyAsync(supplier, executorService);
 
-        completableFutureExec.complete("taking too long!"); //it will force completion if the task was not completed
-
         String string2 = completableFutureExec.join();
+
+        System.out.println("Result = " + string2);
+
+        completableFutureExec.complete("taking too long!"); //now since the task is complete, complete has no effect
+
+        string2 = completableFutureExec.join();
+
+        System.out.println("Result = " + string2);
+
+        completableFutureExec.obtrudeValue("obtruded value"); //no matter what the state of completion, it will be obtruded
+
+        string2 = completableFutureExec.join();
 
         System.out.println("Result = " + string2);
 
